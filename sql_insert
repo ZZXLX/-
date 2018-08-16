@@ -1,0 +1,47 @@
+import pymysql
+
+
+class mysql(object):
+    def __init__(self, code, name, company_name, hyfl, hypm, company_fr, cj_time, ss_time, company_tell, company_add,company_op1,company_op2,company_op3):
+        self.code = code
+        self.name = name
+        self.company_name = company_name
+        self.hyfl = hyfl
+        self.hypm = hypm
+        self.company_fr = company_fr
+        self.cj_time = cj_time
+        self.ss_time = ss_time
+        self.company_tell = company_tell
+        self.company_add = company_add
+        self.company_op1 = company_op1
+        self.company_op2 = company_op2
+        self.company_op3 = company_op3
+
+
+    def insert_data(self):
+        # 打开数据库连接
+        db = pymysql.connect("127.0.0.1", "root", "root", "aa", use_unicode=True, charset="utf8")
+        # 使用 cursor() 方法创建一个游标对象 cursor
+        cursor = db.cursor()
+        cursor.execute('SET NAMES utf8;')
+        cursor.execute('SET CHARACTER SET utf8;')
+        cursor.execute('SET character_set_connection=utf8;')
+        try:
+            sql_replace = " REPLACE INTO stockmarket_xinsanban (gpdm, gsqc, gpjc, bzhy, hypm, gsfr, ctime, cjrq, tell, address,company_op1,company_op2,company_op3) VALUES(%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s,%s, %s)"
+            # 执行sql语句
+            cursor.execute(sql_replace, (
+            self.code, self.name, self.company_name, self.hyfl, self.hypm, self.company_fr, self.cj_time, self.ss_time,
+            self.company_tell, self.company_add, self.company_op1, self.company_op2, self.company_op3))
+            if (cursor.rowcount == 1):
+                print("数据库插入成功")
+            if (cursor.rowcount > 1):
+                print("数据库更新成功")
+            # 提交到数据库执行
+            db.commit()
+        except:
+            print("插入失败")
+            db.rollback()
+        db.close()
+# if __name__ == '__main__':
+#     mq = mysql("123456", "行动教育", "上海行动教育科技股份有限公司", "制造业", "行业排名：2 / 91", "李践", "2018-08-02 10:50:07", "2015-01-28",  "021-60260658", "上海市虹桥商务区兴虹路168弄A栋")
+#     mq.insert_data()
