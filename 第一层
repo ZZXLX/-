@@ -1,0 +1,35 @@
+from selenium import webdriver
+from lxml import etree
+import time
+
+def coll(url):
+    chromeOptions = webdriver.ChromeOptions()
+    chromedriver = "C:\chromedriver.exe"
+    #chromeOptions.add_argument('--headless')
+    chromeOptions.add_argument('--disable-gpu')
+    driver = webdriver.Chrome(chromedriver, chrome_options=chromeOptions)
+    driver.get(url)
+    time.sleep(3)
+    f = open(r'xxList.txt', 'a', encoding='utf-8')
+    for i in range(1, 586):
+        for j in range(1, 20):
+            try:
+                str_xpath = '/html/body/div[2]/div/div[5]/table/tbody/tr[' + format(j) + ']/td[1]/a/span/i'
+                str = driver.find_element_by_xpath(str_xpath).text
+                f.write(str + '\n')
+                print(str)
+            except:
+                print('发生错误',i,j)
+        print('第'+format(i)+'页')
+        driver.find_element_by_class_name('next').click()
+        time.sleep(10)
+    f.close()
+    print('over')
+    driver.quit()
+
+def coll1():
+    print('1')
+
+if __name__ == "__main__":
+    coll('https://www.ipo3.com/xuangu-lists/totalshare-4-search-dG90YWxzaGFyZSUwLDEsMiwz.html')
+
