@@ -1,0 +1,14 @@
+
+class read(object):
+    def __init__(self):
+        pass
+    def read_txt(self):
+        f = open("xxList.txt", encoding="utf-8")
+        line = f.readline()
+        urls_list = []
+        while line:
+            str_url = str(line.replace('\n', ''))
+            urls_list.append(str_url)
+            line = f.readline().strip()  # 读下一行
+        f.close()
+        return urls_list
